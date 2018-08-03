@@ -1,0 +1,46 @@
+#include<iostream>
+
+using namespace std;
+
+//f(i,j)
+//    f(i,j)=max(f(i,j-1),f(i-1,j))+arr[i][j];
+
+int maxNumber(int i, int j)
+{
+	return i>j ? i : j;
+}
+int main()
+{
+	int m;
+	int n;
+	cin >> m >> n;
+	int**p = new int*[m];
+	for (int i = 0; i<m; i++)   //这里只是为了输入。。
+	{
+		p[i] = new int[n];
+		for (int j = 0; j<n; j++)
+			cin >> p[i][j];
+	}
+	int* maxarr = new int[m*n];
+	maxarr[0] = p[0][0];
+	int max = p[0][0];
+	for (int i = 0; i<m; i++)
+		for (int j = 0; j<n; j++)
+		{
+			int up = 0;
+			int left = 0;
+			if (j>0)    //确保左边不是数组之外
+				left= maxarr[i*m + j - 1];   
+			if (i>0)   //确保上面不是数组之外
+				up= maxarr[(i - 1)*m + j];
+				maxarr[i * m + j] = maxNumber(up,left) + p[i][j];
+			if (maxarr[i*m + j]>max)
+				max = maxarr[i*m + j];
+		}
+	for (int i = 0; i < m; i++)   //释放内存
+		delete[] p[i];
+	delete[]p;
+
+	cout << max;
+	return 0;
+}
